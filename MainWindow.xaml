@@ -10,7 +10,7 @@
         <ListBox HorizontalAlignment="Left" Height="335" Margin="20,64,0,0" VerticalAlignment="Top" Width="160" d:ItemsSource="{d:SampleData ItemCount=5}" Background="#FFE4CCFF"/>
         <ListBox HorizontalAlignment="Left" Height="335" Margin="590,64,0,0" VerticalAlignment="Top" Width="160" d:ItemsSource="{d:SampleData ItemCount=5}" Background="#FFE4CCFF"/>
         <Label x:Name="General_GUI" Content="General GUI" HorizontalAlignment="Left" Height="30" Margin="25,24,0,0" VerticalAlignment="Top" Width="155" FontWeight="Bold" FontSize="16"/>
-        <Button Content="Load" HorizontalAlignment="Left" Height="25" Margin="205,69,0,0" VerticalAlignment="Top" Width="90" Background="#FF757575" Foreground="#FFFBFBFB"/>
+        <Button Content="Load" HorizontalAlignment="Left" Height="25" Margin="205,69,0,0" VerticalAlignment="Top" Width="90" Background="#FF757575" Foreground="#FFFBFBFB" Click="Button_Click"/>
         <Button Content="Filter" HorizontalAlignment="Left" Height="25" Margin="205,109,0,0" VerticalAlignment="Top" Width="90" Foreground="#FFFBFBFB" Background="#FF757575"/>
         <TextBox x:Name="txtBoxStaffID" HorizontalAlignment="Left" Height="35" Margin="385,69,0,0" TextWrapping="Wrap" Text="Staff ID" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
         <TextBox x:Name="txtBoxStaffName" HorizontalAlignment="Left" Height="35" Margin="385,119,0,0" TextWrapping="Wrap" Text="Staff Name" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>

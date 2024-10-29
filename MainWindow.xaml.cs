@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.VisualBasic.FileIO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,5 +30,8 @@ namespace General_GUI
             Admin_Window adminWindow = new Admin_Window(); // Instantiate the admin window
             adminWindow.ShowDialog();
         }
+
+        
+        
     }
 }
