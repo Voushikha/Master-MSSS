@@ -7,11 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <StackPanel Orientation="Horizontal" Margin="20,40,0,0">
-            <TextBlock Text="ID" Width="150" FontWeight="Bold"/>
-            <TextBlock Text="Name" Width="200" FontWeight="Bold"/>
-            <TextBox x:Name="txtBoxFilter" Height="35" TextWrapping="Wrap" Text="Filter Staff" Width="160" Background="#FFE6E6E6" TextAlignment="Center" RenderTransformOrigin="0.688,0.701"/>
-        </StackPanel>
+       
+       
+
         <ListBox x:Name="lstBox1" HorizontalAlignment="Left" Height="335" Margin="20,64,0,0" VerticalAlignment="Top" Width="160" d:ItemsSource="{d:SampleData ItemCount=5}" Background="#FFE4CCFF"/>
         <ListBox x:Name="lstBoxFiltered" HorizontalAlignment="Left" Height="335" Margin="590,64,0,0" VerticalAlignment="Top" Width="160"
                  d:ItemsSource="{d:SampleData ItemCount=5}" Background="#FFE4CCFF" SelectionChanged="lstBoxFiltered_SelectionChanged"></ListBox>
@@ -19,10 +17,15 @@
         <Button Content="Load" HorizontalAlignment="Left" Height="25" Margin="205,69,0,0" VerticalAlignment="Top" Width="90" Background="#FF757575" Foreground="#FFFBFBFB" Click="btnLoad_Click"/>
         <Button Content="Filter" HorizontalAlignment="Left" Height="25" Margin="205,109,0,0" VerticalAlignment="Top" Width="90" Foreground="#FFFBFBFB" Background="#FF757575" Click="btnFilter_Click"/>
         <TextBox x:Name="txtBoxStaffID" HorizontalAlignment="Left" Height="35" Margin="385,69,0,0" TextWrapping="Wrap" Text="Staff ID" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
-        <TextBox x:Name="txtBoxStaffName" HorizontalAlignment="Left" Height="35" Margin="385,119,0,0" TextWrapping="Wrap" Text="Staff Name" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
+        <TextBox x:Name="txtBoxStaffName" HorizontalAlignment="Left" Height="35" Margin="385,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
         <Button  x:Name="btnAdmin" Content="Open Admin&#xA;       Gui" HorizontalAlignment="Left" Height="40" Margin="675,14,0,0" VerticalAlignment="Top" Width="75" Background="#FFB3B3B3" Click="btnAdmin_Click"/>
+        <TextBox  x:Name="txtBoxFilterName"  HorizontalAlignment="Left" Height="35" Margin="390,184,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center" TextChanged="txtBoxFilterName_TextChanged" />
 
-        
+        <StatusBar VerticalAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock x:Name="statusMessage" Text="Ready" />
+            </StatusBarItem>
+        </StatusBar>
 
     </Grid>
 </Window>
