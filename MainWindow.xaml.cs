@@ -40,6 +40,14 @@ namespace General_GUI
             Admin_Window adminWindow = new Admin_Window(); // Instantiate the admin window
             adminWindow.ShowDialog();
         }
+        //4.9 Open Admin GUI with Alt + A
+        private void OpenAdminWindow()
+        {
+            var selectedRecord = lstBoxFiltered.SelectedItem as KeyValuePair<int, string>;
+            Admin_Window adminWindow = new Admin_Window(MasterFile, selectedRecord);
+            adminWindow.ShowDialog();
+        }
+
 
         //4.2  Load Method 
         private void LoadData()
@@ -80,9 +88,10 @@ namespace General_GUI
             DisplayData();
         }
 
-        
 
-        // 4.4 Filter method
+
+        // 4.4 Filter nAME -Real-Time Filter by Staff Name method
+       
         private void FilterByName(string filterText)
         {
             var filteredData = MasterFile.Where(kvp => kvp.Value.Contains(filterText, StringComparison.OrdinalIgnoreCase))
@@ -91,11 +100,49 @@ namespace General_GUI
             lstBoxFiltered.ItemsSource = filteredData;
         }
 
+        //4.5 Filter Staff ID
+        private void FilterByID(string filterText)
+        {
+            if (int.TryParse(filterText, out int id))
+            {
+                var filteredData = MasterFile.Where(kvp => kvp.Key.ToString().Contains(filterText))
+                                             .Select(kvp => $"{kvp.Key}: {kvp.Value}")
+                                             .ToList();
+                lstBoxFiltered.ItemsSource = filteredData;
+            }
+        }
+
+        //4.6 4.7 Clear AND Focus
+        private void ClearAndFocusName()
+        {
+            txtBoxStaffName.Clear();
+            txtBoxStaffName.Focus();
+        }
+        private void ClearAndFocusID()
+        {
+            txtBoxStaffID.Clear();
+            txtBoxStaffID.Focus();
+        }
+
+        //4.8Populate TextBoxes on filtered ListBox
+        private void listBoxFiltered_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstBoxFiltered.SelectedItem is KeyValuePair<int, string> selectedRecord)
+            {
+                txtBoxStaffID.Text = selectedRecord.Key.ToString();
+                txtBoxStaffName.Text = selectedRecord.Value;
+            }
+        }
+  
+
+        //5.1
 
 
 
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
+         
+
         //    string filterTerm = txtBoxFilter.Text.ToLower();
         //    var filteredData = staffData.Where(s => s.ID.Contains(filterTerm) || s.Name.ToLower().Contains(filterTerm)).ToList();
 

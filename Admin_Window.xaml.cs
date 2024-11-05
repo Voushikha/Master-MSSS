@@ -30,5 +30,28 @@ namespace General_GUI
             MainWindow adminWindow = new MainWindow(); // Instantiate the admin window
             adminWindow.ShowDialog();
         }
+
+        //5.2 Receive method from general gui
+        public void PopulateFields(KeyValuePair<int, string> selectedRecord)
+        {
+            if (selectedRecord.Key != 0)
+            {
+                txtBoxStaffID.Text = selectedRecord.Key.ToString();
+                txtBoxStaffName.Text = selectedRecord.Value;
+            }
+        }
+        //5.3 Add NEW STAFF METHOD
+        private void AddRecord(int id, string name)
+        {
+            if (MasterFile.ContainsKey(id))
+            {
+                statusMessage.Text = "Duplicate ID. Cannot add.";
+                return;
+            }
+
+            MasterFile[id] = name;
+            statusMessage.Text = "Record added successfully.";
+        }
+        //5.4
     }
 }
