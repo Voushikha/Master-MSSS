@@ -11,7 +11,10 @@ namespace General_GUI
     public partial class MainWindow : Window
     {
         // 4.1 Define a public, static Dictionary<int, string> named MasterFile
-        public static Dictionary<int, string> MasterFile = new Dictionary<int, string>();
+      //  public static Dictionary<int, string> MasterFile = new Dictionary<int, string>();
+        // 6.1 Define a public, static SortedDictionary<int, string> named MasterFile
+        public static SortedDictionary<int, string> MasterFile = new SortedDictionary<int, string>();
+
 
         public MainWindow()
         {
@@ -20,6 +23,7 @@ namespace General_GUI
         }
 
         // 4.2 Method to load data from CSV file into Dictionary
+        // 6.2 Method to load data from CSV file into SortedDictionary
         private void LoadData()
         {
             string filePath = @"D:\Diploma\Complex Data Structure\Assessment\Master MSSS\MalinStaffNamesV3.csv";
@@ -53,7 +57,7 @@ namespace General_GUI
             LoadData();
         }
 
-        // 4.3 Method to display Dictionary data in a read-only ListBox
+        // 4.3 & 6.3 Method to display sorted  Dictionary data in a read-only ListBox
         private void DisplayData()
         {
             lstBox1.ItemsSource = MasterFile.Select(kvp => $"{kvp.Key}: {kvp.Value}").ToList();
@@ -94,6 +98,9 @@ namespace General_GUI
         }
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
+            txtBoxFilterName.Clear();
+            txtBoxStaffName.Clear();
+            txtBoxStaffID.Clear();
             string filterTerm = txtBoxFilterName.Text.ToLower();
 
             var filteredData = MasterFile
@@ -115,7 +122,7 @@ namespace General_GUI
 
 
 
-        // 4.6 Clear and focus on Name TextBox
+        // 4.6 & 6.6 Clear and focus on Name TextBox
         private void ClearAndFocusName()
         {
             txtBoxFilterName.Clear();
@@ -152,6 +159,7 @@ namespace General_GUI
                 var parts = selectedRecord.Split(": ");
                 if (parts.Length == 2 && int.TryParse(parts[0], out int id))
                 {
+                    // Pass SortedDictionary instead of Dictionary
                     Admin_Window adminWindow = new Admin_Window(MasterFile, new KeyValuePair<int, string>(id, parts[1]));
                     adminWindow.ShowDialog();
                 }
@@ -161,6 +169,7 @@ namespace General_GUI
                 statusMessage.Text = "No record selected.";
             }
         }
+
 
         // Keyboard shortcuts for 4.6, 4.7, and 4.9
         private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

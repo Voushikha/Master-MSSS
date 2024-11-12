@@ -2,16 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace General_GUI
 {
@@ -19,64 +12,63 @@ namespace General_GUI
     /// Interaction logic for Admin_Window.xaml
     /// </summary>
     public partial class Admin_Window : Window
-    { //4.1 Define Dictionary<int, string> TKEY
-        private Dictionary<int, string> masterFile;
+    {
+        private SortedDictionary<int, string> masterFile;
         private KeyValuePair<int, string> selectedRecord;
 
         // Constructor that accepts the Dictionary and selected record
-        public Admin_Window(Dictionary<int, string> masterFile, KeyValuePair<int, string> selectedRecord)
+        public Admin_Window(SortedDictionary<int, string> masterFile, KeyValuePair<int, string> selectedRecord)
         {
             InitializeComponent();
             this.masterFile = masterFile;
             this.selectedRecord = selectedRecord;
 
-            // If a record is selected, populate the text boxes with its data
-            if (selectedRecord.Key != 0)
+            DisplayRecords(); // Populate ListBox with existing records
+            PopulateFields(selectedRecord); // Populate fields if a record is passed
+        }
+
+        // Method to display records in the ListBox
+        private void DisplayRecords()
+        {
+            lstBoxPreviewAdmin.ItemsSource = masterFile.Select(kvp => $"{kvp.Key}: {kvp.Value}").ToList();
+        }
+
+        // Populate fields with selected record data
+        private void PopulateFields(KeyValuePair<int, string> record)
+        {
+            if (record.Key != 0)
             {
-                txtBoxStaffID.Text = selectedRecord.Key.ToString();
-                txtBoxStaffName.Text = selectedRecord.Value;
+                txtBoxStaffID.Text = record.Key.ToString();
+                txtBoxStaffName.Text = record.Value;
             }
         }
 
-        public Admin_Window()
+        // SelectionChanged event for ListBox to populate fields for editing/deleting
+        private void lstBoxPreviewAdmin_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InitializeComponent();
-        }
-
-        private void btnCloseAdmin_Click(object sender, RoutedEventArgs e)
-        {
-            // when " Close Admin Button" is clicked open Main Window
-            MainWindow adminWindow = new MainWindow(); // Instantiate the admin window
-            adminWindow.ShowDialog();
-        }
-
-        //5.2 Receive method from general gui
-        public void PopulateFields(KeyValuePair<int, string> selectedRecord)
-        {
-            if (selectedRecord.Key != 0)
+            if (lstBoxPreviewAdmin.SelectedItem is string selectedText)
             {
-                txtBoxStaffID.Text = selectedRecord.Key.ToString();
-                txtBoxStaffName.Text = selectedRecord.Value;
+                var parts = selectedText.Split(": ");
+                if (parts.Length == 2 && int.TryParse(parts[0], out int id))
+                {
+                    txtBoxStaffID.Text = id.ToString();
+                    txtBoxStaffName.Text = parts[1];
+                }
             }
         }
-        #region ADD METHOD
-        //5.3 Add NEW STAFF METHOD
-        private void AddRecord(int id, string name)
-        {
-            if (masterFile.ContainsKey(id))
-            {
-                statusMessage.Text = "Duplicate ID. Cannot add.";
-                return;
-            }
 
-            masterFile[id] = name;
-            statusMessage.Text = "Record added successfully.";
-        }
-        //button add click 
+        // Add a new staff record with a unique ID starting with 77
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(txtBoxStaffID.Text, out int id) && !string.IsNullOrEmpty(txtBoxStaffName.Text))
             {
+                // Ensure that the ID begins with 77
+                if (!txtBoxStaffID.Text.StartsWith("77"))
+                {
+                    statusMessage.Text = "Staff ID must start with 77.";
+                    return;
+                }
+
                 if (masterFile.ContainsKey(id))
                 {
                     statusMessage.Text = "Duplicate ID. Cannot add.";
@@ -84,65 +76,62 @@ namespace General_GUI
                 }
 
                 masterFile[id] = txtBoxStaffName.Text;
-                statusMessage.Text = "Record added successfully.";
+                statusMessage.Text = $"Record with ID {id} added successfully.";
+                DisplayRecords(); // Update ListBox with new entry
+                txtBoxStaffID.Clear();
+                txtBoxStaffName.Clear();
             }
             else
             {
                 statusMessage.Text = "Invalid ID or Name. Please check and try again.";
             }
         }
-        #endregion
-        //5.4 uPDATE
 
-        private void UpdateRecord(int id, string newName)
-        {
-            if (masterFile.ContainsKey(id))
-            {
-                masterFile[id] = newName;
-                statusMessage.Text = "Record updated successfully.";
-            }
-        }
+        // 5.4 Update the name of the current Staff ID
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            // Ensure that we have a valid ID and a non-empty name for the edit operation
             if (int.TryParse(txtBoxStaffID.Text, out int id) && !string.IsNullOrEmpty(txtBoxStaffName.Text))
             {
+                // Check if the ID exists in the dictionary
                 if (masterFile.ContainsKey(id))
                 {
+                    // Update the name for the specified ID
                     masterFile[id] = txtBoxStaffName.Text;
-                    statusMessage.Text = "Record updated successfully.";
+                    statusMessage.Text = $"Record with ID {id} updated successfully.";
+
+                    // Refresh the ListBox to display updated records
+                    DisplayRecords();
+
+                    // Optionally, clear the text boxes after editing
+                    txtBoxStaffID.Clear();
+                    txtBoxStaffName.Clear();
                 }
                 else
                 {
+                    // Show an error message if the ID was not found
                     statusMessage.Text = "Record not found.";
                 }
             }
             else
             {
+                // Show an error message if input validation failed
                 statusMessage.Text = "Invalid ID or Name. Please check and try again.";
             }
         }
 
-        //dELETE mETHOD
 
-        private void DeleteRecord(int id)
-        {
-            if (masterFile.Remove(id))
-            {
-                txtBoxStaffID.Clear();
-                txtBoxStaffName.Clear();
-                statusMessage.Text = "Record deleted successfully.";
-            }
-        }
+        // Delete the current Staff ID and clear the text boxes
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-
             if (int.TryParse(txtBoxStaffID.Text, out int id))
             {
                 if (masterFile.Remove(id))
                 {
                     txtBoxStaffID.Clear();
                     txtBoxStaffName.Clear();
-                    statusMessage.Text = "Record deleted successfully.";
+                    statusMessage.Text = $"Record with ID {id} deleted successfully.";
+                    DisplayRecords(); // Update ListBox after deletion
                 }
                 else
                 {
@@ -155,19 +144,14 @@ namespace General_GUI
             }
         }
 
-        private void SaveToCsv()
+        // Save changes to CSV when Save button is clicked
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var writer = new StreamWriter(@"D:\Diploma\Complex Data Structure\Assessment\Master MSSS\MalinStaffNamesV3.csv"))
-            {
-                foreach (var kvp in masterFile)
-                {
-                    writer.WriteLine($"{kvp.Key},{kvp.Value}");
-                }
-            }
-            statusMessage.Text = "Changes saved to file.";
+            SaveToCsv();
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        // Method to save the dictionary to a CSV file
+        private void SaveToCsv()
         {
             string filePath = @"D:\Diploma\Complex Data Structure\Assessment\Master MSSS\MalinStaffNamesV3.csv";
 
@@ -187,6 +171,28 @@ namespace General_GUI
                 statusMessage.Text = "Error saving to file: " + ex.Message;
             }
         }
-    }
 
+        // Save changes when the window is closed
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            SaveToCsv();
+        }
+
+
+        // Close Admin GUI on Alt + L key press
+        private void AdminWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.L && (Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+            {
+                this.Close();
+            }
+        }
+
+        // Close Admin GUI and return to MainWindow
+        private void btnCloseAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+    }
 }
