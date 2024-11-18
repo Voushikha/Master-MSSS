@@ -168,6 +168,20 @@ namespace General_GUI
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             SaveToCsv();
+            MeasureSaveDataTime();
+        }
+        //FILE IO qUESTIN 8 
+
+        private void MeasureSaveDataTime()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            SaveToCsv();
+
+            stopwatch.Stop();
+            Console.WriteLine($"SaveToCsv execution time: {stopwatch.ElapsedMilliseconds} ms");
+            statusMessage.Text = $"SaveToCsv execution time: {stopwatch.ElapsedMilliseconds} ms";
         }
 
         // Method to save the dictionary to a CSV file
@@ -216,21 +230,7 @@ namespace General_GUI
             this.Close();
         }
 
-        //FILE IO qUESTIN 8 
-      
+        
 
-
-    private void MeasureSaveDataTime()
-    {
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
-
-        SaveToCsv();
-
-        stopwatch.Stop();
-        Console.WriteLine($"SaveToCsv execution time: {stopwatch.ElapsedMilliseconds} ms");
-        statusMessage.Text = $"SaveToCsv execution time: {stopwatch.ElapsedMilliseconds} ms";
     }
-
-}
 }

@@ -52,8 +52,21 @@ namespace General_GUI
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
             LoadData();
+            MeasureLoadDataTime(); // Measure load data time
         }
-        
+        // QUESTION8 
+        private void MeasureLoadDataTime()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            LoadData();
+
+            stopwatch.Stop();
+            Console.WriteLine($"LoadData execution time: {stopwatch.ElapsedMilliseconds} ms");
+            statusMessage.Text = $"LoadData execution time: {stopwatch.ElapsedMilliseconds} ms";
+        }
+
 
         // 4.3  Method to display sorted  Dictionary data in a read-only ListBox
         private void DisplayData()
@@ -185,17 +198,6 @@ namespace General_GUI
             }
         }
 
-        // QUESTION8 
-        private void MeasureLoadDataTime()
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            LoadData();
-
-            stopwatch.Stop();
-            Console.WriteLine($"LoadData execution time: {stopwatch.ElapsedMilliseconds} ms");
-            statusMessage.Text = $"LoadData execution time: {stopwatch.ElapsedMilliseconds} ms";
-        }
+       
     }
 }
