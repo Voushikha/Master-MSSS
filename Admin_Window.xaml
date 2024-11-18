@@ -11,13 +11,13 @@
         <ListBox x:Name="lstBoxPreviewAdmin" HorizontalAlignment="Left" Height="335" Margin="20,79,0,0" VerticalAlignment="Top" Width="160" Background="#FFE4CCFF" SelectionChanged="lstBoxPreviewAdmin_SelectionChanged"/>
 
         <Label x:Name="Admin_GUI" Content="Admin GUI" HorizontalAlignment="Left" Height="30" Margin="25,24,0,0" VerticalAlignment="Top" Width="155" FontWeight="Bold" FontSize="16"/>
-        <Button x:Name="btnAdd" Content="ADD" HorizontalAlignment="Left" Height="25" Margin="420,179,0,0" VerticalAlignment="Top" Width="90" Background="#FF757575" Foreground="#FFFBFBFB" Click="btnAdd_Click"/>
-        <Button x:Name="btnEdit" Content="EDIT" HorizontalAlignment="Left" Height="25" Margin="420,219,0,0" VerticalAlignment="Top" Width="90" Foreground="#FFFBFBFB" Background="#FF757575" Click="btnEdit_Click"/>
-        <TextBox x:Name="txtBoxStaffID" HorizontalAlignment="Left" Height="35" Margin="385,69,0,0" TextWrapping="Wrap" Text="Staff ID" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
-        <TextBox x:Name="txtBoxStaffName" HorizontalAlignment="Left" Height="35" Margin="385,119,0,0" TextWrapping="Wrap" Text="Staff Name" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
+        <Button x:Name="btnAdd" Content="ADD" HorizontalAlignment="Left" Height="25" Margin="240,144,0,0" VerticalAlignment="Top" Width="90" Background="#FF757575" Foreground="#FFFBFBFB" Click="btnAdd_Click"/>
+        <Button x:Name="btnEdit" Content="EDIT" HorizontalAlignment="Left" Height="25" Margin="240,184,0,0" VerticalAlignment="Top" Width="90" Foreground="#FFFBFBFB" Background="#FF757575" Click="btnEdit_Click"/>
+        <TextBox x:Name="txtBoxStaffID" HorizontalAlignment="Left" Height="35" Margin="385,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
+        <TextBox x:Name="txtBoxStaffName" HorizontalAlignment="Left" Height="35" Margin="385,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center"/>
         <Button  x:Name="btnCloseAdmin" Content="Close Admin&#xA;  Gui" HorizontalAlignment="Left" Height="40" Margin="470,14,0,0" VerticalAlignment="Top" Width="75" Background="#FFB3B3B3" Click="btnCloseAdmin_Click"/>
-        <Button x:Name="btnDelete" Content="DELETE" HorizontalAlignment="Left" Height="25" Margin="420,259,0,0" VerticalAlignment="Top" Width="90" Background="#FF757575" Foreground="#FFFBFBFB" Click="btnDelete_Click"/>
-        <Button x:Name="btnSave" Content="SAVE" HorizontalAlignment="Left" Height="25" Margin="420,299,0,0" VerticalAlignment="Top" Width="90" Foreground="#FFFBFBFB" Background="#FF757575" Click="btnSave_Click"/>
+        <Button x:Name="btnDelete" Content="DELETE" HorizontalAlignment="Left" Height="25" Margin="240,224,0,0" VerticalAlignment="Top" Width="90" Background="#FF757575" Foreground="#FFFBFBFB" Click="btnDelete_Click"/>
+        <Button x:Name="btnSave" Content="SAVE" HorizontalAlignment="Left" Height="25" Margin="240,264,0,0" VerticalAlignment="Top" Width="90" Foreground="#FFFBFBFB" Background="#FF757575" Click="btnSave_Click"/>
 
         <!-- Status Bar for confirmation messages -->
         <StatusBar VerticalAlignment="Bottom">
@@ -26,5 +26,9 @@
             </StatusBarItem>
         </StatusBar>
         <Label Content="Preview Listbox;" HorizontalAlignment="Left" Height="25" Margin="25,54,0,0" VerticalAlignment="Top" Width="150"/>
+        <TextBox x:Name="txtBoxSearch" HorizontalAlignment="Left" Height="35" Margin="385,209,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Background="#FFE6E6E6" TextAlignment="Center" TextChanged="txtSearch_TextChanged"/>
+        <Label Content="Staff ID" HorizontalAlignment="Left" Height="25" Margin="385,84,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Staff Name" HorizontalAlignment="Left" Height="25" Margin="385,139,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Search Staff " HorizontalAlignment="Left" Height="25" Margin="385,189,0,0" VerticalAlignment="Top" Width="110"/>
     </Grid>
 </Window>

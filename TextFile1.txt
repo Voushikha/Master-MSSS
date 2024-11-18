@@ -1,50 +1,44 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace General_GUI
+namespace SortedGeneral_GUI
 {
     public partial class MainWindow : Window
     {
-     
         // 6.1 Define a public, static SortedDictionary<int, string> named MasterFile
         public static SortedDictionary<int, string> MasterFile = new SortedDictionary<int, string>();
-
 
         public MainWindow()
         {
             InitializeComponent();
+            LoadData();
         }
 
-       
         // 6.2 Method to load data from CSV file into SortedDictionary
         private void LoadData()
         {
-            //useing buffered reader for question 8
             string filePath = @"D:\Diploma\Complex Data Structure\Assessment\Master MSSS\MalinStaffNamesV3.csv";
             MasterFile.Clear();
 
             try
             {
-                // Read all lines at once for buffered reading 
-                // adjust for question8 
-                var lines = File.ReadAllLines(filePath);
-
-                // Process each line
-                foreach (var line in lines)
+                using (var reader = new StreamReader(filePath))
                 {
-                    var values = line.Split(',');
-                    if (values.Length == 2 && int.TryParse(values[0], out int id))
+                    while (!reader.EndOfStream)
                     {
-                        MasterFile[id] = values[1];
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+                        if (values.Length == 2 && int.TryParse(values[0], out int id))
+                        {
+                            MasterFile[id] = values[1];
+                        }
                     }
                 }
-
                 DisplayData();
                 statusMessage.Text = "Data loaded successfully.";
             }
@@ -54,14 +48,12 @@ namespace General_GUI
             }
         }
 
-
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
             LoadData();
         }
-        
 
-        //  6.3 Method to display sorted  Dictionary data in a read-only ListBox
+        // 6.3 Display SortedDictionary data in a read-only ListBox
         private void DisplayData()
         {
             lstBox1.ItemsSource = MasterFile.Select(kvp => $"{kvp.Key}: {kvp.Value}").ToList();
@@ -70,9 +62,8 @@ namespace General_GUI
         // 6.4 Method for real-time filtering by Name
         private void txtBoxFilterName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            FilterByName(txtBoxFilterName.Text);
+            FilterByName(txtBoxStaffName.Text);
         }
-       
 
         private void FilterByName(string filterText)
         {
@@ -100,47 +91,22 @@ namespace General_GUI
                 lstBoxFiltered.ItemsSource = filteredData;
             }
         }
-        private void btnFilter_Click(object sender, RoutedEventArgs e)
-        {
-            txtBoxFilterName.Clear();
-            txtBoxStaffName.Clear();
-            txtBoxStaffID.Clear();
-            string filterTerm = txtBoxFilterName.Text.ToLower();
 
-            var filteredData = MasterFile
-                .Where(kvp => kvp.Key.ToString().Contains(filterTerm) || kvp.Value.ToLower().Contains(filterTerm))
-                .Select(kvp => $"{kvp.Key}: {kvp.Value}")
-                .ToList();
-
-            lstBoxFiltered.ItemsSource = filteredData;
-
-            if (!filteredData.Any())
-            {
-                statusMessage.Text = "No matching records found.";
-            }
-            else
-            {
-                statusMessage.Text = "Filtered results displayed.";
-            }
-        }
-
-
-
-        // 4.6 & 6.6 Clear and focus on Name TextBox
+        // 6.6 Clear and focus on Name TextBox
         private void ClearAndFocusName()
         {
-            txtBoxFilterName.Clear();
-            txtBoxFilterName.Focus();
+            txtBoxStaffName.Clear();
+            txtBoxStaffName.Focus();
         }
 
-        // 4.7 Clear and focus on ID TextBox
+        // 6.7 Clear and focus on ID TextBox
         private void ClearAndFocusID()
         {
             txtBoxStaffID.Clear();
             txtBoxStaffID.Focus();
         }
 
-        // 4.8 Populate text boxes when selecting an item from filtered ListBox
+        // 6.8 Populate text boxes when selecting an item from filtered ListBox
         private void lstBoxFiltered_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lstBoxFiltered.SelectedItem is string selectedText)
@@ -154,7 +120,7 @@ namespace General_GUI
             }
         }
 
-        // 4.9 Open Admin GUI with Alt + A and pass selected record
+        // 6.9 Open Admin GUI with Alt + A and pass selected record
         private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
             var selectedRecord = lstBoxFiltered.SelectedItem as string;
@@ -163,7 +129,6 @@ namespace General_GUI
                 var parts = selectedRecord.Split(": ");
                 if (parts.Length == 2 && int.TryParse(parts[0], out int id))
                 {
-                    // Pass SortedDictionary instead of Dictionary
                     Admin_Window adminWindow = new Admin_Window(MasterFile, new KeyValuePair<int, string>(id, parts[1]));
                     adminWindow.ShowDialog();
                 }
@@ -174,8 +139,7 @@ namespace General_GUI
             }
         }
 
-
-        // Keyboard shortcuts for 4.6, 4.7, and 4.9
+        // Keyboard shortcuts for 6.6, 6.7, and 6.9
         private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.N && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
@@ -190,19 +154,6 @@ namespace General_GUI
             {
                 btnAdmin_Click(sender, e);
             }
-        }
-
-        // QUESTION8 
-        private void MeasureLoadDataTime()
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            LoadData();
-
-            stopwatch.Stop();
-            Console.WriteLine($"LoadData execution time: {stopwatch.ElapsedMilliseconds} ms");
-            statusMessage.Text = $"LoadData execution time: {stopwatch.ElapsedMilliseconds} ms";
         }
     }
 }
