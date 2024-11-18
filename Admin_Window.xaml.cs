@@ -14,22 +14,22 @@ namespace General_GUI
     /// </summary>
     public partial class Admin_Window : Window
     {
-        private SortedDictionary<int, string> masterFile;
+        private Dictionary<int, string> masterFile; // Change SortedDictionary to Dictionary
         private KeyValuePair<int, string> selectedRecord;
 
         // Constructor that accepts the Dictionary and selected record
-        public Admin_Window(SortedDictionary<int, string> masterFile, KeyValuePair<int, string> selectedRecord)
-        {
-            InitializeComponent();
-            this.masterFile = masterFile;
-            this.selectedRecord = selectedRecord;
 
-            DisplayRecords(); // Populate ListBox with existing records
-            PopulateFields(selectedRecord); // Populate fields if a record is passed
-        }
+        public Admin_Window(Dictionary<int, string> masterFile, KeyValuePair<int, string> selectedRecord)
+            {
+                InitializeComponent();
+                this.masterFile = masterFile;
+                this.selectedRecord = selectedRecord;
 
-        // Method to display records in the ListBox
-        private void DisplayRecords()
+                DisplayRecords();
+                PopulateFields(selectedRecord);
+            }
+            // Method to display records in the ListBox
+            private void DisplayRecords()
         {
             lstBoxPreviewAdmin.ItemsSource = masterFile.Select(kvp => $"{kvp.Key}: {kvp.Value}").ToList();
         }

@@ -12,9 +12,7 @@ namespace General_GUI
     public partial class MainWindow : Window
     {
         // 4.1 Define a public, static Dictionary<int, string> named MasterFile
-      //  public static Dictionary<int, string> MasterFile = new Dictionary<int, string>();
-        // 6.1 Define a public, static SortedDictionary<int, string> named MasterFile
-        public static SortedDictionary<int, string> MasterFile = new SortedDictionary<int, string>();
+          public static Dictionary<int, string> MasterFile = new Dictionary<int, string>();
 
 
         public MainWindow()
@@ -23,7 +21,6 @@ namespace General_GUI
         }
 
         // 4.2 Method to load data from CSV file into Dictionary
-        // 6.2 Method to load data from CSV file into SortedDictionary
         private void LoadData()
         {
             string filePath = @"D:\Diploma\Complex Data Structure\Assessment\Master MSSS\MalinStaffNamesV3.csv";
@@ -31,11 +28,8 @@ namespace General_GUI
 
             try
             {
-                // Read all lines at once for buffered reading 
-                // adjust for question8 
                 var lines = File.ReadAllLines(filePath);
 
-                // Process each line
                 foreach (var line in lines)
                 {
                     var values = line.Split(',');
@@ -61,7 +55,7 @@ namespace General_GUI
         }
         
 
-        // 4.3 & 6.3 Method to display sorted  Dictionary data in a read-only ListBox
+        // 4.3  Method to display sorted  Dictionary data in a read-only ListBox
         private void DisplayData()
         {
             lstBox1.ItemsSource = MasterFile.Select(kvp => $"{kvp.Key}: {kvp.Value}").ToList();
@@ -163,7 +157,6 @@ namespace General_GUI
                 var parts = selectedRecord.Split(": ");
                 if (parts.Length == 2 && int.TryParse(parts[0], out int id))
                 {
-                    // Pass SortedDictionary instead of Dictionary
                     Admin_Window adminWindow = new Admin_Window(MasterFile, new KeyValuePair<int, string>(id, parts[1]));
                     adminWindow.ShowDialog();
                 }
