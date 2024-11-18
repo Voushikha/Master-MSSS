@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -42,7 +43,26 @@ namespace General_GUI
                 txtBoxStaffName.Text = record.Value;
             }
         }
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Check if masterFile is null before proceeding
+            if (masterFile == null)
+            {
+                statusMessage.Text = "Data not loaded.";
+                return;
+            }
 
+            string searchText = txtBoxSearch.Text.ToLower();
+            var filteredRecords = masterFile
+                .Where(kvp => kvp.Key.ToString().Contains(searchText) || kvp.Value.ToLower().Contains(searchText))
+                .Select(kvp => $"{kvp.Key}: {kvp.Value}")
+                .ToList();
+
+            lstBoxPreviewAdmin.ItemsSource = filteredRecords;
+
+            // Update status message
+            statusMessage.Text = filteredRecords.Any() ? "Filtered results displayed." : "No matching records found.";
+        }
         // SelectionChanged event for ListBox to populate fields for editing/deleting
         private void lstBoxPreviewAdmin_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -157,7 +177,7 @@ namespace General_GUI
 
             try
             {
-                using (var writer = new StreamWriter(filePath))
+                using (var writer = new StreamWriter(filePath, false))
                 {
                     foreach (var kvp in masterFile)
                     {
@@ -172,12 +192,13 @@ namespace General_GUI
             }
         }
 
+
         // Save changes when the window is closed
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            SaveToCsv();
-        }
+        // protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        // {
+        //     base.OnClosing(e);
+        //     SaveToCsv();
+        // }
 
 
         // Close Admin GUI on Alt + L key press
@@ -194,5 +215,22 @@ namespace General_GUI
         {
             this.Close();
         }
+
+        //FILE IO qUESTIN 8 
+      
+
+
+    private void MeasureSaveDataTime()
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        SaveToCsv();
+
+        stopwatch.Stop();
+        Console.WriteLine($"SaveToCsv execution time: {stopwatch.ElapsedMilliseconds} ms");
+        statusMessage.Text = $"SaveToCsv execution time: {stopwatch.ElapsedMilliseconds} ms";
     }
+
+}
 }
