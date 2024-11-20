@@ -21,9 +21,13 @@ namespace General_GUI
         }
 
         // 4.2 Method to load data from CSV file into Dictionary
+        
         private void LoadData()
         {
-            string filePath = @"D:\Diploma\Complex Data Structure\Assessment\Master MSSS\MalinStaffNamesV3.csv";
+            //changed path directory to relative path based on feedback.
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\MalinStaffNamesV3.csv");
+
+
             MasterFile.Clear();
 
             try
